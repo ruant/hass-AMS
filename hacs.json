@@ -1,5 +1,5 @@
 {
-  "name": "hass-AMS",
+  "name": "hass-AMS (tcp/ip)",
   "country": ["NO", "SE"],
   "domains": ["sensor"],
   "render_readme": true
