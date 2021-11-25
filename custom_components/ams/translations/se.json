@@ -9,6 +9,7 @@
                 "title": "AMS läsare",
                 "description": "Installera sensor för AMS läsare",
                 "data": {
+                    "serial_url": "URL till serieenhet",
                     "serial_port": "Serieport",
                     "parity": "Paritet",
                     "meter_manufacturer": "Mätartilverkare",

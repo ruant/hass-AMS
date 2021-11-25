@@ -9,6 +9,7 @@
                 "title": "AMS Noreg",
                 "description": "Installerar sensorar for AMS Lesar",
                 "data": {
+                    "serial_url": "URL til serie eining",
                     "serial_port": "Serieport",
                     "parity": "Paritet",
                     "meter_manufacturer": "Målar produsent",

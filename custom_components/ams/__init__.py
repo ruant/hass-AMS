@@ -23,12 +23,13 @@ from custom_components.ams.const import (
     CONF_BAUDRATE,
     CONF_METER_MANUFACTURER,
     CONF_PARITY,
-    # CONF_SERIAL_URL,
+    CONF_SERIAL_URL,
     CONF_SERIAL_PORT,
     DEFAULT_BAUDRATE,
     DEFAULT_METER_MANUFACTURER,
     DEFAULT_PARITY,
     DEFAULT_SERIAL_PORT,
+    DEFAULT_SERIAL_URL,
     DEFAULT_TIMEOUT,
     DOMAIN,
     FRAME_FLAG,
@@ -49,18 +50,16 @@ CONFIG_SCHEMA = vol.Schema(
     {
         DOMAIN: vol.Schema(
             {
-                vol.Required(
-                    CONF_SERIAL_PORT, default=DEFAULT_SERIAL_PORT
-                ): cv.string,
-                vol.Required(
-                    CONF_METER_MANUFACTURER,
-                    default=DEFAULT_METER_MANUFACTURER
-                ): cv.string,
-                vol.Optional(CONF_PARITY, default=DEFAULT_PARITY):
-                    cv.string,
-                vol.Optional(
-                    CONF_BAUDRATE, default=DEFAULT_BAUDRATE
-                ): vol.All(int),
+                vol.Exclusive('serialurl'): {
+
+                    vol.Required(CONF_SERIAL_URL, default=DEFAULT_SERIAL_URL, description={"suggested_value": "socket://IP:PORT"}): cv.string,
+                },
+                vol.Exclusive('serialport'): {
+                    vol.Required(CONF_SERIAL_PORT, default=DEFAULT_SERIAL_PORT): cv.string,
+                    vol.Required(CONF_METER_MANUFACTURER, default=DEFAULT_METER_MANUFACTURER): cv.string,
+                    vol.Optional(CONF_PARITY, default=DEFAULT_PARITY): cv.string,
+                    vol.Optional(CONF_BAUDRATE, default=DEFAULT_BAUDRATE): vol.All(int),
+                }
             }
         )
     },
@@ -120,9 +119,7 @@ class AmsHub:
         port = entry.get(CONF_SERIAL_PORT)
         baudrate = entry.get(CONF_BAUDRATE, DEFAULT_BAUDRATE)
         parity = entry.get(CONF_PARITY)
-        # serialurl = entry.get(CONF_SERIAL_URL)
-        serialurl = "rfc2217://10.0.40.113:6638"
-        #serialurl = "socket://10.0.40.113:6638"
+        serialurl = entry.get(CONF_SERIAL_URL)
         self.meter_manufacturer = entry.get(CONF_METER_MANUFACTURER)
         self.sensor_data = {}
         self._attrs = {}

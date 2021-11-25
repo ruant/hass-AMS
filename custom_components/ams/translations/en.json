@@ -9,6 +9,7 @@
                 "title": "AMS Reader",
                 "description": "Setup AMS sensors",
                 "data": {
+                    "serial_url": "Serial URL",
                     "serial_port": "Serial Port",
                     "parity": "Parity",
                     "meter_manufacturer": "Meter manufacturer",
