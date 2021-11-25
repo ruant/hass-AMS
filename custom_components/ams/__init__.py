@@ -23,6 +23,7 @@ from custom_components.ams.const import (
     CONF_BAUDRATE,
     CONF_METER_MANUFACTURER,
     CONF_PARITY,
+    CONF_SERIAL_URL,
     CONF_SERIAL_PORT,
     DEFAULT_BAUDRATE,
     DEFAULT_METER_MANUFACTURER,
@@ -117,21 +118,28 @@ class AmsHub:
         """Initialize the AMS hub."""
         self._hass = hass
         port = entry.get(CONF_SERIAL_PORT)
-        _LOGGER.debug("Connecting to HAN using port %s", port)
+        baudrate = entry.get(CONF_BAUDRATE, DEFAULT_BAUDRATE)
         parity = entry.get(CONF_PARITY)
+        # serialurl = entry.get(CONF_SERIAL_URL)
+        serialurl = "rfc2217://10.0.40.113:6638"
+        #serialurl = "socket://10.0.40.113:6638"
         self.meter_manufacturer = entry.get(CONF_METER_MANUFACTURER)
         self.sensor_data = {}
         self._attrs = {}
         self._running = True
-        self._ser = serial.Serial(
-            port=port,
-            baudrate=entry.get(CONF_BAUDRATE, DEFAULT_BAUDRATE),
-            parity=parity,
-            stopbits=serial.STOPBITS_ONE,
-            bytesize=serial.EIGHTBITS,
-            timeout=DEFAULT_TIMEOUT,
-        )
+        if serialurl:
+            self._ser = serial.serial_for_url(serialurl)
+        else:
+            self._ser = serial.Serial(
+                port=port,
+                baudrate=baudrate,
+                parity=parity,
+                stopbits=serial.STOPBITS_ONE,
+                bytesize=serial.EIGHTBITS,
+                timeout=DEFAULT_TIMEOUT,
+            )
         self.connection = threading.Thread(target=self.connect, daemon=True)
+        _LOGGER.debug("Connecting to HAN using port %s", port)
         self.connection.start()
         _LOGGER.debug("Finish init of AMS")
 
