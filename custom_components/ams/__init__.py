@@ -29,7 +29,6 @@ from custom_components.ams.const import (
     DEFAULT_METER_MANUFACTURER,
     DEFAULT_PARITY,
     DEFAULT_SERIAL_PORT,
-    DEFAULT_SERIAL_URL,
     DEFAULT_TIMEOUT,
     DOMAIN,
     FRAME_FLAG,
@@ -50,10 +49,6 @@ CONFIG_SCHEMA = vol.Schema(
     {
         DOMAIN: vol.Schema(
             {
-                vol.Exclusive('serialurl'): {
-
-                    vol.Required(CONF_SERIAL_URL, default=DEFAULT_SERIAL_URL, description={"suggested_value": "socket://IP:PORT"}): cv.string,
-                },
                 vol.Exclusive('serialport'): {
                     vol.Required(CONF_SERIAL_PORT, default=DEFAULT_SERIAL_PORT): cv.string,
                     vol.Required(CONF_METER_MANUFACTURER, default=DEFAULT_METER_MANUFACTURER): cv.string,
